@@ -1,25 +1,52 @@
-import { useState, Fragment } from "react";
+import { useReducer, Fragment } from "react";
 import data from "../../static.json";
 import {FaArrowRight} from "react-icons/fa";
+import reducer from "./reducer";
+
+
+const initialState = {
+    group: "Rooms",
+    bookableIndex: 0,
+    hasDetails: true,
+    bookables: data.bookables
+};
 
 const BookablesList = () => {
-    const [group, setGroup] = useState("Kit")
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const [group, bookableIndex, bookables, hasDetails] = state;
     const bookablesInGroup = data.bookables.filter(b => b.group === group);
-    const [bookableIndex, setBookableIndex] = useState(0);
+    const bookable = bookablesInGroup[bookableIndex];
     const groups = [...new Set(data.bookables.map(b => b.group))];
 
-    const bookable = bookablesInGroup[bookableIndex];
-    const [hasDetails, setHasDetails] = useState(false);
-
-    function nextBookable () { ; 
-        setBookableIndex(i => (i + 1) % bookablesInGroup.length);
+    
+    function changeGroup (event) {
+        dispatch({
+            type: "SET_GROUP",
+            payload: event.target.value
+        })
     }
+
+    function changeBookable (selectedIndex){
+        dispatch({
+            type: "SET_BOOKABLE",
+            payload: selectedIndex
+        });
+    }
+
+    function nextBookable () {
+        dispatch ({ type: "NEXT_BOOKABLE"});
+    }
+
+    function toggleDetails () {
+        dispatch ({ type: "TOGGLE_HAS_DETAILS" });
+    }
+
   return (
     <Fragment>
     <div>
         <select
             value={group}
-            onChange={(e) => setGroup(e.target.value)}
+            onChange={changeGroup}
         >
         {groups.map(g => <option value={g} key={g}>{g}</option>)}
         </select>
@@ -31,7 +58,7 @@ const BookablesList = () => {
                 >
                     <button 
                         className="btn" 
-                        onClick={() => setBookableIndex(idx)}
+                        onClick={() => changeBookable(idx)}
                     >
                         {bookables.title}
                     </button>
@@ -55,7 +82,7 @@ const BookablesList = () => {
                             <input
                             type="checkbox"
                             checked={hasDetails}
-                            onChange={() => setHasDetails(has => !has)}
+                            onChange={toggleDetails}
                             />
                                 Show Details
                         </label>
