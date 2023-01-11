@@ -1,4 +1,9 @@
 
+/* 
+    The following listing shows a couple of utility functions: 
+    1. one to create a new date from an old date, offset by a number of days, 
+    2. And the second to generate the week objects.
+*/
 export function addDays (date, daysToAdd) {
     const clone = new Date(date.getTime());
     clone.setDate(clone.getDate() + daysToAdd); // Shift the date by the number of days specified.
