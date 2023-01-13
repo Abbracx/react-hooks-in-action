@@ -1,14 +1,25 @@
-import data from "../../static.json";
 import {useState, useEffect, Fragment} from 'react'
+import Spinner from "../UI/Spinner";
 
 const UsersList = () => {
+    const url = "http://localhost:3000/users"
     const [ users, setUsers ] = useState([])
     const [userIndex, setUserIndex] = useState(1);
     const user = users[userIndex]
 
     useEffect(()=>{
-        setUsers(data.users)
+        async function getUsers(){
+            const resp = await fetch(url)
+            const data = await resp.json()
+            setUsers(data)
+        }
+        getUsers();
     }, [])
+
+    if(users.length === 0){
+        return <Spinner />
+    }
+
     return (
         <Fragment>
             <div>
@@ -65,7 +76,7 @@ const UsersList = () => {
                 </div> 
             )}
         </Fragment>
-      )
+    )
 }
 
 export default UsersList 
