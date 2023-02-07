@@ -1,4 +1,4 @@
-import { useReducer, useEffect, Fragment } from "react";
+import { useReducer, useEffect, useRef, Fragment } from "react";
 // import data from "../../static.json";
 import data from "../../static.json";
 import {FaArrowRight} from "react-icons/fa";
@@ -22,6 +22,8 @@ const BookablesList = () => {
     const bookable = bookablesInGroup[bookableIndex];
     const groups = [...new Set(bookables.map(b => b.group))]; // unique bookables
 
+    const timerRef =  useRef(null)
+
     useEffect(() => {
         dispatch({type: "FETCH_BOOKABLES_REQUEST"});
 
@@ -35,7 +37,22 @@ const BookablesList = () => {
                 payload: error
             }));
     }, [])
-    
+
+
+    // Run an effect when the component first mounts.
+    useEffect(() => {
+        // Start an interval timer and assign its ID to the ref’s current property.
+        timerRef.current = setInterval(() => {
+            dispatch({ type: "NEXT_BOOKABLE" })
+        }, 3000);
+        return stopPresentation;
+    },[])
+
+
+    // Use the timer ID to clear the timer.
+    function stopPresentation() {
+        clearInterval(timerRef.current)
+    }
 
     function changeGroup (event) {
         dispatch({
@@ -112,6 +129,10 @@ const BookablesList = () => {
                             />
                                 Show Details
                         </label>
+                        <button className="btn"
+                            onClick={stopPresentation}>
+                            Stop
+                        </button>
                     </span>
                 </div>
                 <p>{bookable.notes}</p>
