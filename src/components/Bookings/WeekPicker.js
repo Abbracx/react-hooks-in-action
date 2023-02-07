@@ -12,7 +12,7 @@ export default function WeekPicker({date}) {
             <p className="date-picker">
                 <button 
                     className="btn"
-                    onClick={() => dispatch({ type: "PREV_WEEK"})}
+                    onClick={() => dispatch({ type: "PREVIOUS_WEEK"})}
                 >
                     <FaChevronLeft/>
                     <span>Prev</span>

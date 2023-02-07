@@ -23,6 +23,7 @@ const BookablesList = () => {
     const groups = [...new Set(bookables.map(b => b.group))]; // unique bookables
 
     const timerRef =  useRef(null)
+    const nextButtonRef = useRef()
 
     useEffect(() => {
         dispatch({type: "FETCH_BOOKABLES_REQUEST"});
@@ -66,6 +67,7 @@ const BookablesList = () => {
             type: "SET_BOOKABLE",
             payload: selectedIndex
         });
+        nextButtonRef.current.focus()
     }
 
     function nextBookable () {
@@ -109,7 +111,11 @@ const BookablesList = () => {
             ))}
         </ul>
         <p> 
-        <button className="btn" onClick={nextBookable} autoFocus >
+        <button 
+            className="btn" 
+            onClick={nextBookable} 
+            ref={nextButtonRef} 
+            autoFocus >
             <FaArrowRight/>
             <span>Next</span>
         </button>
