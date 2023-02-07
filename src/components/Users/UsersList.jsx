@@ -1,23 +1,34 @@
 import {useState, useEffect, Fragment} from 'react'
+import getData from '../../utils/api';
+// import reducer from "./reducer";
+// import getData from "../../utils/api";
 import Spinner from "../UI/Spinner";
 
 const UsersList = () => {
-    const url = "http://localhost:3000/users"
+    const url = "http://localhost:3001/users"
     const [ users, setUsers ] = useState([])
+    const [ error, setError ] = useState("")
     const [userIndex, setUserIndex] = useState(1);
     const user = users[userIndex]
 
     useEffect(()=>{
         async function getUsers(){
-            const resp = await fetch(url)
-            const data = await resp.json()
-            setUsers(data)
+            try {
+                const data = await getData(url)
+                setUsers(data)
+            } catch (error) {
+                setError(error)
+            }
         }
-        getUsers();
+        getUsers()        
     }, [])
 
     if(users.length === 0){
         return <Spinner />
+    }
+
+    if(error){
+        return <p>{error.message}</p>
     }
 
     return (
