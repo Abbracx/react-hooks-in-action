@@ -1,25 +1,13 @@
-import { useReducer, useEffect, useRef, Fragment } from "react";
-// import data from "../../static.json";
-import data from "../../static.json";
+import { useEffect, useRef } from "react";
 import {FaArrowRight} from "react-icons/fa";
-import reducer from "./reducer";
 import getData from "../../utils/api";
 import Spinner from "../UI/Spinner";
 
-const initialState = {
-    group: "Rooms",
-    bookableIndex: 0,
-    hasDetails: true,
-    bookables: [],
-    isLoading: true,
-    error: false
-};
 
-const BookablesList = () => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const {group, bookableIndex, bookables, hasDetails, isLoading, error} = state;
+const BookablesList = ({ state, dispatch }) => {
+
+    const {group, bookableIndex, bookables, isLoading, error} = state;
     const bookablesInGroup = bookables.filter(b => b.group === group); // bookables belonging to a group
-    const bookable = bookablesInGroup[bookableIndex];
     const groups = [...new Set(bookables.map(b => b.group))]; // unique bookables
 
     const timerRef =  useRef(null)
@@ -37,7 +25,7 @@ const BookablesList = () => {
                 type: "FETCH_BOOKABLES_ERROR",
                 payload: error
             }));
-    }, [])
+    }, [dispatch])
 
 
     // Run an effect when the component first mounts.
@@ -74,10 +62,6 @@ const BookablesList = () => {
         dispatch ({ type: "NEXT_BOOKABLE"});
     }
 
-    function toggleDetails () {
-        dispatch ({ type: "TOGGLE_HAS_DETAILS" });
-    }
-
     if(error){
         return <p>{error.message}</p>
     }
@@ -86,14 +70,10 @@ const BookablesList = () => {
         return <p><Spinner/> Loading bookables...</p>
     }
 
-  return (
-    <Fragment>
+  return ( 
     <div>
-        <select
-            value={group}
-            onChange={changeGroup}
-        >
-        {groups.map(g => <option value={g} key={g}>{g}</option>)}
+        <select value={group} onChange={changeGroup} >
+            {groups.map(g => <option value={g} key={g}>{g}</option>)}
         </select>
         <ul className="bookables items-list-nav">
             {bookablesInGroup.map((bookables, idx) => (
@@ -111,57 +91,17 @@ const BookablesList = () => {
             ))}
         </ul>
         <p> 
-        <button 
-            className="btn" 
-            onClick={nextBookable} 
-            ref={nextButtonRef} 
-            autoFocus >
-            <FaArrowRight/>
-            <span>Next</span>
-        </button>
+            <button 
+                className="btn" 
+                onClick={nextBookable} 
+                ref={nextButtonRef} 
+                autoFocus
+            >
+                <FaArrowRight/>
+                <span>Next</span>
+            </button>
         </p>
     </div>
-    { bookable && (
-        <div className="bookable-details">
-            <div className="item">
-                <div className="item-header">
-                    <h2>{bookable.title}</h2>
-                    <span className="controls">
-                        <label>
-                            <input
-                            type="checkbox"
-                            checked={hasDetails}
-                            onChange={toggleDetails}
-                            />
-                                Show Details
-                        </label>
-                        <button className="btn"
-                            onClick={stopPresentation}>
-                            Stop
-                        </button>
-                    </span>
-                </div>
-                <p>{bookable.notes}</p>
-
-                {hasDetails && (
-                    <div className="item-details">
-                        <h3>Availability</h3>
-                        <div className="bookable-availability">
-                            <ul>
-                                {bookable.days.sort().map(d => <li key={d}>{data.days[d]}</li>)}
-                            </ul> 
-                            <ul>
-                                {bookable.sessions
-                                .map(s => <li key={s}>{data.sessions[s]}</li>)
-                                } 
-                            </ul>
-                        </div>
-                    </div>
-                )} 
-            </div>
-        </div> 
-    )}
-    </Fragment>
   )
 }
 
