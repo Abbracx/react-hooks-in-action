@@ -35,7 +35,7 @@ const BookablesList = ({ state, dispatch }) => {
             dispatch({ type: "NEXT_BOOKABLE" })
         }, 3000);
         return stopPresentation;
-    },[])
+    },[dispatch])
 
 
     // Use the timer ID to clear the timer.
