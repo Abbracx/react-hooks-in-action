@@ -1,6 +1,6 @@
 import { getWeek } from "../../utils/date-wrangler";
 
-export default function reducer(state, action) {
+export default function weekReducer(state, action) {
     switch (action.type) {
         case "NEXT_WEEK":
             return getWeek(state.date, 7);
