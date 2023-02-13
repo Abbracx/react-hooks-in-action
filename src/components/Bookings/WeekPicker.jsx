@@ -1,6 +1,5 @@
-import { useReducer, useRef, useState } from "react";
-import reducer from "./weekReducer";
-import { getWeek } from "../../utils/date-wrangler";
+import { useRef, useState } from "react";
+
 import {
     FaChevronLeft, 
     FaCalendarDay, 
@@ -9,10 +8,10 @@ import {
 } from "react-icons/fa";
 
 
-export default function WeekPicker({date}) {
+export default function WeekPicker({dispatch}) {
 
     // Generate the initial state, passing date to getWeek.
-    const [week, dispatch] = useReducer(reducer, date, getWeek) 
+    // const [week, dispatch] = useReducer(reducer, date, getWeek) 
     const [dateText, setDateText] = useState(new Date())
     // const textboxRef = useRef();
 
@@ -75,9 +74,6 @@ export default function WeekPicker({date}) {
                     <FaChevronRight/>
                     <span>Next</span>
                 </button>
-            </p>
-            <p>
-                {week.start.toDateString()} - {week.end.toDateString()}
             </p>
         </div>
     )

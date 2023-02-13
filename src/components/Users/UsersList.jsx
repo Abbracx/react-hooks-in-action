@@ -33,7 +33,7 @@ const UsersList = ({user, setUser }) => {
 
     return (
         <ul className="users items-list-nav">
-            {users.map((usr, idx) => (
+            {users.map((usr, _idx) => (
                 <li
                     key={usr.id}
                     className={usr.id === user?.id ? "selected" : null}
