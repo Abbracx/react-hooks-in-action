@@ -21,6 +21,12 @@ export function getWeek (forDate, daysOffset = 0){
     };
 }
 
+// shortISO returns the date part of the ISO-string for a given date
+export function shortISO (date) {
+    return date.toISOString().split("T")[0];
+}
+  
+
 // Get the week object for the week containing today’s date
 // const today = new Date();
 // const week = getWeek(today)
