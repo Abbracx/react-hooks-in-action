@@ -1,17 +1,17 @@
-import { sessions as sessionNames } from "../../static.json";
+import data from "../../static.json";
 import {addDays, shortISO} from "../../utils/date-wrangler";
 
 
 // Function that accept the current bookable and week start date as arguments.
 export function getGrid(bookable, startDate){
-    
+   
     // Use the day numbers and start date to create an array of dates for the week.
     const dates = bookable.days.sort().map(
         d => shortISO(addDays(startDate, d))
     );
 
     // Use the session names and numbers to create an array of session names.
-    const sessions = bookable.sessions.map( i => sessionNames[i])
+    const sessions = bookable.sessions.map( i => data.sessions[i])
 
     const grid = {}
 
