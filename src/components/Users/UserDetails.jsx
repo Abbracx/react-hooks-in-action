@@ -1,5 +1,3 @@
-import React from 'react'
-
 const UserDetails = ({ user }) => {
   return  user ? (
         <div className="item user">
