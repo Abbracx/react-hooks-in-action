@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Spinner from "../UI/Spinner";
 
 
-const UsersPicker = ({user, setUser}) => {
+const UserPicker = ({user, setUser}) => {
 
   const [users, setUsers ] = useState(null);
 
@@ -40,4 +40,4 @@ const UsersPicker = ({user, setUser}) => {
   )
 }
 
-export default UsersPicker
+export default UserPicker

@@ -8,7 +8,7 @@ import {
 import BookablesPage from "./Bookables/BookablesPage"; 
 import BookingsPage from "./Bookings/BookingsPage"; 
 import UsersPage from "./Users/UsersPage";
-import UsersPicker from "./Users/UsersPicker";
+import UserPicker from "./Users/UserPicker";
 import UserContext from "./Users/UserContext";
 import {FaCalendarAlt, FaDoorOpen, FaUsers} from "react-icons/fa";
 import '../App.css';
@@ -43,7 +43,8 @@ function App() {
                 </li>
               </ul>
             </nav>
-            <UsersPicker/>
+
+            <UserPicker user={user} setUser={setUser}/>   
           </header>
           <Routes>
             <Route path="/bookings" element={<BookingsPage/>}/>
