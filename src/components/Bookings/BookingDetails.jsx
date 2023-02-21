@@ -7,7 +7,7 @@ import Booking from "./Booking";
 export default function BookingDetails ({ booking, bookable }) {
 
     // Call useContext with the shared context and assign the value to the user variable
-    const user = useContext(UserContext)
+    const user  = useContext(UserContext)
 
     // Check if the booking belongs to the user
     const isBooker = booking && user && (booking.bookerId === user.id);

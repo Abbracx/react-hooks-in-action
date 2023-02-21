@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,15 +8,15 @@ import BookablesPage from "./Bookables/BookablesPage";
 import BookingsPage from "./Bookings/BookingsPage"; 
 import UsersPage from "./Users/UsersPage";
 import UserPicker from "./Users/UserPicker";
-import UserContext from "./Users/UserContext";
+import { UserProvider } from "./Users/UserContext";
 import {FaCalendarAlt, FaDoorOpen, FaUsers} from "react-icons/fa";
 import '../App.css';
 
 function App() {
-  const [ user, setUser ] = useState();
+
 
   return (
-    <UserContext.Provider value={user}>
+    <UserProvider>
       <Router>
         <div className="App">
           <header>
@@ -43,8 +42,7 @@ function App() {
                 </li>
               </ul>
             </nav>
-
-            <UserPicker user={user} setUser={setUser}/>   
+            <UserPicker />   
           </header>
           <Routes>
             <Route path="/bookings" element={<BookingsPage/>}/>
@@ -53,7 +51,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </UserContext.Provider>
+    </UserProvider>
    
   );
 }

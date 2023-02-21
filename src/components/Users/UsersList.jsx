@@ -1,4 +1,4 @@
-import {useState, useEffect, Fragment} from 'react';
+import {useState, useEffect } from 'react';
 import getData from '../../utils/api';
 import Spinner from "../UI/Spinner";
 

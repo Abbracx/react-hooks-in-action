@@ -1,10 +1,14 @@
+import { useContext } from "react";
 import { useState, useEffect } from "react";
 import Spinner from "../UI/Spinner";
+import UserContext, { UserSetContext } from "./UserContext";
 
 
-const UserPicker = ({user, setUser}) => {
+const UserPicker = () => {
 
   const [users, setUsers ] = useState(null);
+  const user = useContext(UserContext)
+  const setUser = useContext(UserSetContext)
 
   useEffect(() => {
     async function getUsers(){
