@@ -3,8 +3,8 @@ import { useState } from "react";
 import UsersList from "./UsersList";
 import UserDetails from "./UserDetails";
 import { useContext } from "react";
-import UserContext from "./UserContext";
-
+// import UserContext from "./UserContext";
+import { useUser } from "./UserContext";
 
 const UsersPage = () => {
 
@@ -14,7 +14,8 @@ const UsersPage = () => {
     The colon syntax lets us assign a property to a differently 
     named variable when destructuring an object. 
   */
-  const loggedInUser  = useContext(UserContext)
+  // const loggedInUser  = useContext(UserContext)
+  const { user: loggedInUser } = useUser()
 
   // if no user has been selected in the users list,
   // select the logged in user

@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, useContext, createContext } from "react";
 
 const UserContext = createContext();
 
@@ -25,6 +25,16 @@ export function UserProvider({children}){
 
 }
 
+export function useUser() {
+    const user = useContext(UserContext)
+    const setUser = useContext(UserSetContext)
+
+    if(!setUser) {
+        throw new Error("The UserProvider is missing...")
+    }
+
+    return [user, setUser]
+}
 /*  
     We assign an object, {user, setUser}, to the value prop of the provider.
     Every time the component renders, it’s a fresh object that’s assigned, 
