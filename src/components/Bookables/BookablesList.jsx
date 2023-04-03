@@ -1,13 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {FaArrowRight} from "react-icons/fa";
 // import getData from "../../utils/api";
 import useFetch from "../../utils/useFetch";
 import Spinner from "../UI/Spinner";
 
 
-const BookablesList = ({ bookable, setBookable }) => {
+const BookablesList = ({ bookable, bookables, getUrl }) => {
 
-    const { data: bookables = [], status, error } = useFetch("http://localhost:3001/bookables")
+    // const { data: bookables = [], status, error } = useFetch("http://localhost:3001/bookables")
 
     // const [bookables, setBookables] = useState([]);
     // const [error, setError] = useState(false);
@@ -18,13 +19,14 @@ const BookablesList = ({ bookable, setBookable }) => {
     const bookablesInGroup = bookables.filter(b => b.group === group); // bookables belonging to a group
     const groups = [...new Set(bookables.map(b => b.group))]; // unique bookables
 
+    const navigate = useNavigate()
     const timerRef =  useRef(null)
     const nextButtonRef = useRef()
 
 
-    useEffect(()=>{
-        setBookable(bookables[0])
-    },[bookables, setBookable])
+    // useEffect(()=>{
+    //     setBookable(bookables[0])
+    // },[bookables, setBookable])
     // useEffect(() => {
         // dispatch({type: "FETCH_BOOKABLES_REQUEST"});
 
@@ -53,9 +55,10 @@ const BookablesList = ({ bookable, setBookable }) => {
         const i = bookablesInGroup.indexOf(bookable);
         const nextIndex = (i + 1) % bookablesInGroup.length;
         const nextBookable = bookablesInGroup[nextIndex];
-      setBookable(nextBookable);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-    },[bookable, bookablesInGroup, setBookable])
+        navigate(getUrl(nextBookable.id));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    },[bookable, bookablesInGroup, getUrl, navigate])
     
+   
     // Run an effect when the component first mounts.
     useEffect(() => {
         // Start an interval timer and assign its ID to the ref’s current property.
@@ -81,7 +84,7 @@ const BookablesList = ({ bookable, setBookable }) => {
         const bookablesInSelectedGroup = bookables.filter(
             b => b.group === event.target.value
           );
-          setBookable(bookablesInSelectedGroup[0]);
+         navigate(getUrl(bookablesInSelectedGroup[0].id));
     }
 
     function changeBookable (selectedBookable){
@@ -89,19 +92,19 @@ const BookablesList = ({ bookable, setBookable }) => {
         //     type: "SET_BOOKABLE",
         //     payload: selectedIndex
         // });
-        setBookable(selectedBookable);
+        // setBookable(selectedBookable);
         nextButtonRef.current.focus()
     }
 
     
 
-    if(status === "error"){
-        return <p>{error.message}</p>
-    }
+    // if(status === "error"){
+    //     return <p>{error.message}</p>
+    // }
 
-    if (status === "loading") {
-        return <p><Spinner/> Loading bookables...</p>
-    }
+    // if (status === "loading") {
+    //     return <p><Spinner/> Loading bookables...</p>
+    // }
 
   return ( 
     <div>
@@ -114,12 +117,11 @@ const BookablesList = ({ bookable, setBookable }) => {
                     key={b.id}
                     className={b.id === bookable.id ? "selected" : null}
                 >
-                    <button 
-                        className="btn" 
-                        onClick={() => changeBookable(b)}
-                    >
-                        {b.title}
-                    </button>
+                    <Link
+                        to={getUrl(b.id)}
+                        className="btn"
+                        replace={true}
+                    >{b.title}</Link>
                 </li>
             ))}
         </ul>
