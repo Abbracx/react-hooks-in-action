@@ -1,13 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {FaArrowRight} from "react-icons/fa";
-import getData from "../../utils/api";
+// import getData from "../../utils/api";
+import useFetch from "../../utils/useFetch";
 import Spinner from "../UI/Spinner";
 
 
 const BookablesList = ({ bookable, setBookable }) => {
-    const [bookables, setBookables] = useState([]);
-    const [error, setError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+
+    const { data: bookables = [], status, error } = useFetch("http://localhost:3001/bookables")
+
+    // const [bookables, setBookables] = useState([]);
+    // const [error, setError] = useState(false);
+    // const [isLoading, setIsLoading] = useState(true);
 
     const group = bookable?.group;
     // const {group, bookableIndex, bookables, isLoading, error} = state;
@@ -17,19 +21,23 @@ const BookablesList = ({ bookable, setBookable }) => {
     const timerRef =  useRef(null)
     const nextButtonRef = useRef()
 
-    useEffect(() => {
+
+    useEffect(()=>{
+        setBookable(bookables[0])
+    },[bookables, setBookable])
+    // useEffect(() => {
         // dispatch({type: "FETCH_BOOKABLES_REQUEST"});
 
-        getData("http://localhost:3001/bookables")
-            .then(bookables => {
-                setBookable(bookables[0]);
-                setBookables(bookables);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setError(error);
-                setIsLoading(false);
-            })
+        // getData("http://localhost:3001/bookables")
+        //     .then(bookables => {
+        //         setBookable(bookables[0]);
+        //         setBookables(bookables);
+        //         setIsLoading(false);
+        //     })
+        //     .catch(error => {
+        //         setError(error);
+        //         setIsLoading(false);
+        //     })
             // .then(bookables => dispatch({
             //     type: "FETCH_BOOKABLES_SUCCESS",
             //     payload: bookables
@@ -38,9 +46,16 @@ const BookablesList = ({ bookable, setBookable }) => {
             //     type: "FETCH_BOOKABLES_ERROR",
             //     payload: error
             // }));
-    }, [setBookable])
+    // }, [setBookable])
 
-
+    const nextBookable = useCallback( () => {
+        // dispatch ({ type: "NEXT_BOOKABLE"});
+        const i = bookablesInGroup.indexOf(bookable);
+        const nextIndex = (i + 1) % bookablesInGroup.length;
+        const nextBookable = bookablesInGroup[nextIndex];
+      setBookable(nextBookable);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    },[bookable, bookablesInGroup, setBookable])
+    
     // Run an effect when the component first mounts.
     useEffect(() => {
         // Start an interval timer and assign its ID to the ref’s current property.
@@ -78,19 +93,13 @@ const BookablesList = ({ bookable, setBookable }) => {
         nextButtonRef.current.focus()
     }
 
-    function nextBookable () {
-        // dispatch ({ type: "NEXT_BOOKABLE"});
-        const i = bookablesInGroup.indexOf(bookable);
-        const nextIndex = (i + 1) % bookablesInGroup.length;
-        const nextBookable = bookablesInGroup[nextIndex];
-        setBookable(nextBookable);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-    }
+    
 
-    if(error){
+    if(status === "error"){
         return <p>{error.message}</p>
     }
 
-    if (isLoading) {
+    if (status === "loading") {
         return <p><Spinner/> Loading bookables...</p>
     }
 
