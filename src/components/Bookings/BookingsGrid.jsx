@@ -2,42 +2,48 @@ import {useEffect, useMemo, useState, Fragment} from "react"
 import {getGrid, transformBookings} from "./grid-builder";
 import {getBookings} from "../../utils/api";
 import Spinner from "../UI/Spinner";
+import { useBookings, useGrid } from "./bookingsHook";
+
 
 
 export default function BookingsGrid ({week, bookable, booking, setBooking}) {
+
+      const { bookings, status, error } = useBookings(bookable?.id, week.start, week.end)
+
+      const { grid, sessions, dates } = useGrid(bookable, week.start)
       // Handle the bookings data locally.
-      const [bookings, setBookings] = useState(null);
-      const [error, setError] = useState(false);
+      // const [bookings, setBookings] = useState(null);
+      // const [error, setError] = useState(false);
 
 
-      const { grid, sessions, dates } = useMemo(
-            // Call the grid generator only if there’s a bookable.
-            () => bookable ? getGrid(bookable, week.start) : {},
-            [bookable, week.start])
+      // const { grid, sessions, dates } = useMemo(
+      //       // Call the grid generator only if there’s a bookable.
+      //       () => bookable ? getGrid(bookable, week.start) : {},
+      //       [bookable, week.start])
 
       useEffect(() => {
             if(bookable){
                   // Use a variable to track whether the bookings data is current.
-                  let doUpdate = true
+                  // let doUpdate = true
 
-                  setBookings(null)
-                  setError(null)
+                  // setBookings(null)
+                  // setError(null)
                   setBooking(null)
 
-                  getBookings(bookable.id, week.start, week.end)
-                        .then(resp => {
+                  // getBookings(bookable.id, week.start, week.end)
+                  //       .then(resp => {
                               // Check if the bookings data is current.
-                              if(doUpdate) {
+                              // if(doUpdate) {
                                     // Create a bookings lookup and assign it to state.
-                                    setBookings(transformBookings(resp));
-                              }
-                        })
-                        .catch(setError)
+                                    // setBookings(transformBookings(resp));
+                              // }
+                        // })
+                        // .catch(setError)
                   
                   // Return a cleanup function to invalidate the data.
-                  return () => doUpdate = false;
+                  // return () => doUpdate = false;
             }
-      }, [week, bookable, setBooking])
+      }, [week.start, bookable, setBooking])
 
       /*
             Cell helper function that returns the UI for a single cell 
@@ -54,7 +60,7 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}) {
                   <td 
                   key={date} 
                   className={isSelected ? "selected" : null}
-                  onClick={bookings ? () => setBooking(cellData) : null }
+                  onClick={status === "success" ? () => setBooking(cellData) : null }
                   >
                   {cellData.title}
                   </td>
@@ -63,17 +69,17 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}) {
       }
 
       if(!grid){
-            return <p>Loading...</p>
+            return <p>Waiting for bookable and week details...</p>
       }
     return (
       <Fragment>
-            {error && (
+            {status === "error" && (
                   <p className="bookingsError">
                         {`There was a problem loading the bookings data (${error})`}
                   </p>
             )}
             <table
-                  className={bookings ? "bookingsGrid active" : "bookingsGrid"}
+                  className={status === "success" ? "bookingsGrid active" : "bookingsGrid"}
             >
                   <thead>
                   <tr> 
