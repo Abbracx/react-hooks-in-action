@@ -11,7 +11,7 @@ import PageSpinner from "../UI/PageSpinner";
 
 export default function BookablesView() {
 
-    const { data: bookables, status, error } = useFetch("http://localhost:3001/bookables")
+    const { data: bookables = [], status, error } = useFetch("http://localhost:3001/bookables")
 
     const { id } = useParams();
     const bookable = bookables.find(
