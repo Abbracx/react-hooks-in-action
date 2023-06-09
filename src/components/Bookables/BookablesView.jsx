@@ -7,7 +7,7 @@ import useFetch from "../../utils/useFetch";
 // import reducer from "./reducer";
 import BookablesList from "./BookablesList";
 import BookableDetails from "./BookableDetails";
-import PageSpinner from "../UI/PageSpinner";
+import PageSpinner from "../UI/Spinner";
 
 export default function BookablesView() {
 

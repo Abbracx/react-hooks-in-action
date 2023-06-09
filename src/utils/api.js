@@ -10,7 +10,7 @@ export default function getData(url){
         })
 }
 
-export  function getBookings(bookableId, startDate, endDate){
+export function getBookings(bookableId, startDate, endDate){
 
     // Format the dates for the querystring
     const start = shortISO(startDate); 

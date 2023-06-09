@@ -26,6 +26,7 @@ export function shortISO (date) {
     return date.toISOString().split("T")[0];
 }
   
+export const isDate = date => !isNaN(Date.parse(date));
 
 // Get the week object for the week containing today’s date
 // const today = new Date();
