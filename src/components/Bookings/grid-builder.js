@@ -44,3 +44,4 @@ export function transformBookings (bookingsArray) {
         return bookings;
     }, {});
 }
+

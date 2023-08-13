@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom"
-import BookablesView from "./BookablesView"
-import BookablesEdit from "./BookablesView"
-import BookablesNew from "./BookablesView"
-
+import { Routes, Route } from "react-router-dom";
+import BookablesView from "./BookablesView";
+import BookablesEdit from "./BookablesView";
+import BookablesNew from "./BookablesView";
 
 const BookablesPage = () => {
   return (
@@ -10,20 +9,12 @@ const BookablesPage = () => {
     //     <BookablesView />
     // </main>
     <Routes>
-      <Route path="/">
-        <BookablesView />
-      </Route>
-      <Route path="/:id">
-        <BookablesView />
-      </Route>
-      <Route path="/:id/edit">
-        <BookablesEdit />
-      </Route>
-      <Route path="/new">
-        <BookablesNew />
-      </Route>
+      <Route path="/" element={<BookablesView />}></Route>
+      <Route path="/:id" element={<BookablesView />}></Route>
+      <Route path="/:id/edit" element={<BookablesEdit />}></Route>
+      <Route path="/new" element={<BookablesNew />}></Route>
     </Routes>
-  )
-}
+  );
+};
 
-export default BookablesPage
+export default BookablesPage;

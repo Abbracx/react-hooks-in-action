@@ -15,7 +15,7 @@ export function useBookings(bookableId, startDate, endDate){
     const querystring = `bookableId=${bookableId}&date_gte=${start}&date_lte=${end}`;
     const query = useFetch(`${urlRoot}?${querystring}`);
 
-
+   
     return {
         bookings: query.data ? transformBookings(query.data) : {},
         ...query
@@ -44,12 +44,21 @@ export function useBookingsParams() {
     const idInt = parseInt(bookableId, 10)
     const hasId = !isNaN(idInt)
 
+    /* 
+        setSearchParams, updating the URL with a query string that matches the new parameters:
+        Components that consume the search parameters will re-render, using the fresh values as the latest state
+    */
     function setBookingsDate(date) {
         const params = {}
         if(hasId) { params.bookableId = bookableId }
         if(isDate(date)) { params.date = date }
 
         if( params.date || params.bookableId !== undefined ){
+            /*
+                The {replace: true} option causes the browser to replace 
+                the current URL in its history with the new one. 
+                This will prevent each visited date from appearing in the browser’s history
+            */
             setSearchParams(params, {replace: true})
         }
     }

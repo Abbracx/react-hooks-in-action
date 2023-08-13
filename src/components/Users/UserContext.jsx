@@ -1,10 +1,10 @@
 import { useState, useContext, createContext } from "react";
 
 const UserContext = createContext();
+const UserSetContext = createContext()
 
 // Export the context object so that other components can import it.
-export default UserContext
-export const UserSetContext = createContext()
+
 
 /* 
     a. Assign the special children prop to a local variable.
@@ -16,8 +16,8 @@ export function UserProvider({children}){
     const [user, setUser] = useState(null);
 
     return (
-        <UserContext.Provider value={{user}} >
-            <UserSetContext.Provider value={{setUser}}>
+        <UserContext.Provider value={user} >
+            <UserSetContext.Provider value={setUser}>
                 {children}
             </UserSetContext.Provider>
         </UserContext.Provider>
@@ -47,6 +47,8 @@ export function useUser() {
 
     a. A new object is assigned to the provider value every render.
     b. Changing one property on the value re-renders consumers that may not consume that value.
+
+    We can solve both problems by using two contexts rather than one in our custom provider.
 
     #PROBLEM
     <UserContext.Provider value={{user, setUser}} >

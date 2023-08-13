@@ -23,6 +23,13 @@ export default function WeekPicker({dispatch}) {
         2. Dispatch the SET_DATE action.
         3. Use the ref to get the text value in the text box.
     */
+   // function gotoDate() {
+   //     dispatch({
+   //         type: "SET_DATE",
+   //         payload: dateText
+   //         payload: textboxRef.current.value
+   //     })
+   // }
 
     const dates = {
         prev: shortISO(addDays(date, -7)),
@@ -30,13 +37,6 @@ export default function WeekPicker({dispatch}) {
         today: shortISO(new Date())
     }
 
-    function gotoDate() {
-        dispatch({
-            type: "SET_DATE",
-            payload: dateText
-            // payload: textboxRef.current.value
-        })
-    }
 
     return (
         <div>
@@ -68,7 +68,7 @@ export default function WeekPicker({dispatch}) {
 
                     <button
                         className="go btn"
-                        onClick={gotoDate(textboxRef.current.value)}
+                        //onClick={goToDate(textboxRef.current.value)}
                     >
                         <FaCalendarCheck/>
                         <span>Go</span>
@@ -77,7 +77,7 @@ export default function WeekPicker({dispatch}) {
 
                 <button 
                     className="btn"
-                    onClick={() => gotoDate(dates.next)}
+                    onClick={() => goToDate(dates.next)}
                 >
                     <FaChevronRight/>
                     <span>Next</span>

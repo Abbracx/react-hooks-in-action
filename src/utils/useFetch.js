@@ -3,8 +3,8 @@ import getData from "./api";
 
 export default function useFetch(url) {
     const [data, setData] = useState();
-    const [error, setError] = useState(null)
-    const [status, setStatus] = useState("idle")
+    const [error, setError] = useState(null);
+    const [status, setStatus] = useState("idle");
 
     useEffect(() => {
         let doUpdate = true;

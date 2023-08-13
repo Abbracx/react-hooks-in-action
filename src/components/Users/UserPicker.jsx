@@ -6,7 +6,7 @@ import { useUser } from "./UserContext";
 
 const UserPicker = () => {
 
-  const [user, setUser] = useUser()
+  const [ user, setUser ] = useUser()
   // const [users, setUsers ] = useState(null);
   const { data: users = [], status, error } = useFetch("http://localhost:3001/users")
 

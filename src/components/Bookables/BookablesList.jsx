@@ -14,16 +14,20 @@ const BookablesList = ({ bookable, bookables, getUrl }) => {
     // const [error, setError] = useState(false);
     // const [isLoading, setIsLoading] = useState(true);
 
+    // Get group of that specific bookable
     const group = bookable?.group;
     // const {group, bookableIndex, bookables, isLoading, error} = state;
-    const bookablesInGroup = bookables.filter(b => b.group === group); // bookables belonging to a group
-    const groups = [...new Set(bookables.map(b => b.group))]; // unique bookables
+
+    // Get bookables that belong to the group above
+    const bookablesInGroup = bookables.filter(b => b.group === group); 
+    // Get unique bookables
+    const groups = [...new Set(bookables.map(b => b.group))]; 
 
     const navigate = useNavigate()
     const timerRef =  useRef(null)
     const nextButtonRef = useRef()
 
-
+    // console.log(timerRef);
     // useEffect(()=>{
     //     setBookable(bookables[0])
     // },[bookables, setBookable])
