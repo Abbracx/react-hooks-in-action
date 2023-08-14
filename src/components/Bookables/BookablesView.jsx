@@ -7,7 +7,7 @@ import useFetch from "../../utils/useFetch";
 // import reducer from "./reducer";
 import BookablesList from "./BookablesList";
 import BookableDetails from "./BookableDetails";
-import PageSpinner from "../UI/Spinner";
+import Spinner from "../UI/Spinner";
 
 export default function BookablesView() {
 
@@ -24,7 +24,7 @@ export default function BookablesView() {
     }
 
     if (status === "loading") {
-        return <PageSpinner/>
+        return <Spinner />
       }
       
     // const [bookable, setBookable] = useState();

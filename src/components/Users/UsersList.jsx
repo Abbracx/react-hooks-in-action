@@ -27,7 +27,7 @@ const UsersList = ({user, setUser }) => {
     }, [users, setUser])
 
     if(status === "loading"){
-        return <p><Spinner /> Loading users...</p>
+        return <Spinner />
     }
 
     if(status === "error"){
