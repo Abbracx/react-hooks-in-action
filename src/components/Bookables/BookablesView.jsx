@@ -1,17 +1,17 @@
-import {useState, Fragment} from "react";
 import {Link, useParams} from "react-router-dom";
 import {FaPlus} from "react-icons/fa";
+import {useQuery} from 'react-query'
 
-import useFetch from "../../utils/useFetch";
 
-// import reducer from "./reducer";
+import getData from "../../utils/api";
+
 import BookablesList from "./BookablesList";
 import BookableDetails from "./BookableDetails";
 import Spinner from "../UI/Spinner";
 
 export default function BookablesView() {
 
-    const { data: bookables = [], status, error } = useFetch("http://localhost:3001/bookables")
+    const { data: bookables = [], status, error } = useQuery("bookables", () => getData("http://localhost:3001/bookables"))
 
     const { id } = useParams();
     const bookable = bookables.find(
@@ -26,22 +26,6 @@ export default function BookablesView() {
     if (status === "loading") {
         return <Spinner />
       }
-      
-    // const [bookable, setBookable] = useState();
-    // const initialState = {
-    //     group: "Rooms",
-    //     bookableIndex: 0,
-    //     bookables: [],
-    //     isLoading: true,
-    //     error: false
-    // };
-
-    // const [state, dispatch] = useReducer(reducer, initialState);
-    // console.log(initialState)
-    // const bookablesInGroup = state.bookables.filter(
-    //     b => b.group === state.group
-    // )
-    // const bookable = bookablesInGroup[state.bookableIndex];
 
     return (
         <main className="bookables-page">

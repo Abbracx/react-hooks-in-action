@@ -1,23 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useQuery } from "react-query"
 import Spinner from "../UI/Spinner";
-// import UserContext, { UserSetContext } from "./UserContext";
-import useFetch from "../../utils/useFetch";
+import getData from "../../utils/api";
 import { useUser } from "./UserContext";
 
 const UserPicker = () => {
 
   const [ user, setUser ] = useUser()
   // const [users, setUsers ] = useState(null);
-  const { data: users = [], status, error } = useFetch("http://localhost:3001/users")
+  const { data: users = [], status, error } = useQuery("users", () => getData("http://localhost:3001/users"))
 
 
   useEffect(() => {
-    // async function getUsers(){
-    //   const resp = await fetch("http://localhost:3001/users")
-    //   const data = await resp.json()
-    //   // setUsers(data)
-    // }
-    // getUsers();
     setUser(users[0])
   }, [setUser, users])
 
