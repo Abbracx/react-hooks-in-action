@@ -24,7 +24,7 @@ export default function BookableDetails({ bookable }) {
             Show Details
           </label>
           <Link
-            to={`bookables/${bookable.id}/new`}
+            to={`bookables/${bookable.id}/edit`}
             replace={true}
             className="btn btn-header"
           >

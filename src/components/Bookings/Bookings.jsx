@@ -6,7 +6,6 @@ import WeekPicker from "./WeekPicker";
 import BookingsGrid from "./BookingsGrid";
 import BookingDetails from "./BookingDetails";
 
-import weekReducer from "./weekReducer";
 
 export default function Bookings({bookable}){
     // const [week, dispatch] = useReducer(weekReducer, new Date(), getWeek)
@@ -26,6 +25,15 @@ export default function Bookings({bookable}){
         // Set the currently selected booking to null if the start date changes.
         setBooking(null)
     }, [bookable, weekStart]);
+
+
+    // deselect the booking if it no longer exists
+    // i.e. it has been deleted
+    useEffect(() => {
+        if (booking?.id !== undefined && !selectedBooking) {
+          setBooking(null);
+        }
+      }, [booking, selectedBooking]);
 
     return (
         <div className="bookings">

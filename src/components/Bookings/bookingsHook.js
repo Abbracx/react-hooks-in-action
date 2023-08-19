@@ -1,10 +1,9 @@
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSearchParams } from "react-router-dom";
 import { shortISO, isDate } from "../../utils/date-wrangler";
-import getData from "../../utils/api";
-import { transformBookings } from "./grid-builder";
-import { getGrid } from "./grid-builder";
+import getData, { createItem, editItem, deleteItem } from "../../utils/api";
+import { getGrid, transformBookings } from "./grid-builder";
 
 export function useBookings(bookableId, startDate, endDate) {
   const start = shortISO(startDate);
@@ -14,7 +13,7 @@ export function useBookings(bookableId, startDate, endDate) {
 
   const querystring = `bookableId=${bookableId}&date_gte=${start}&date_lte=${end}`;
 
-// Specify an array as the query key.
+  // Specify an array as the query key.
   const query = useQuery(
     ["bookings", bookableId, start, end],
     getData(`${urlRoot}?${querystring}`)
@@ -74,5 +73,64 @@ export function useBookingsParams() {
     date,
     bookableId: hasId ? idInt : undefined, // set bookableId to undefined if it's not an integer
     setBookingsDate,
+  };
+}
+
+export function useCreateBooking(key) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (item) => createItem("http://localhost:3001/bookings", item),
+    {
+      onSuccess: (booking) => {
+        queryClient.invalidateQueries(key);
+        const bookings = queryClient.getQueryData(key) || [];
+        queryClient.setQueryData(key, [...bookings, booking]);
+      },
+    }
+  );
+
+  return {
+    createBooking: mutation.mutate,
+    isCreating: mutation.isLoading,
+  };
+}
+
+export function useUpdateBooking(key){
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    item => editItem(`http://localhost:3001/bookings/${item.id}`, item),
+    {
+      onSuccess: (booking) => {
+        queryClient.invalidateQueries(key);
+        const bookings = queryClient.getQueryData(key) || [];
+        const bookingindex = bookings.findIndex(b => b.id === booking.id);
+        bookings[bookingindex] = booking;
+        queryClient.setQueryData(key, bookings)
+      }
+    }
+  );
+
+  return {
+    updatebooking: mutation.mutate,
+    isUploading: mutation.isLoading
+  }
+}
+
+export function useDeleteBooking (key) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    id => deleteItem(`http://localhost:3001/bookings/${id}`),
+    {
+      onSuccess: (resp, id) => {
+        queryClient.invalidateQueries(key);
+        const bookings = queryClient.getQueryData(key) || [];
+        queryClient.setQueryData(key, bookings.filter(b => b.id !== id))
+      }
+    }
+  );
+
+  return {
+    deleteBooking: mutation.mutate,
+    isDeleting: mutation.isLoading
   };
 }

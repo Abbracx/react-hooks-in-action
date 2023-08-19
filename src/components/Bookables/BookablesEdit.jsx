@@ -40,15 +40,19 @@ export default function BookableEdit() {
   }
 
   if (isLoading || isUpdating || isDeleting) {
+    console.log("IS LOADING....")
     return <Spinner />;
   }
 
   return (
-    <BookableForm
-      formState={formState}
-      handleSubmit={handleSubmit}
-      handleDelete={handleDelete}
-    />
+    // <BookableForm
+    //   formState={formState}
+    //   handleSubmit={handleSubmit}
+    //   handleDelete={handleDelete}
+    // />
+    <>
+      {console.log("RETURNED A FORM...")}
+    </>
   );
 }
 
